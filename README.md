@@ -2,7 +2,7 @@
 
 I'm re-writting John Patrick Given's jQuery-Verbose-Calendar so it sits inside a backbone mvc framework, adding some extra functionality along the way.
 
-_This project isn't worth forking... yet. It's barely been started_
+_This project isn't worth forking... yet. It's barely been started._
 
 # Credits
 
