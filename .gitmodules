@@ -1,0 +1,9 @@
+[submodule "libs/jquery.scrollTo"]
+	path = libs/jquery.scrollTo
+	url = https://github.com/flesler/jquery.scrollTo.git
+[submodule "libs/backbone"]
+	path = libs/backbone
+	url = https://github.com/documentcloud/backbone.git
+[submodule "libs/tipsy"]
+	path = libs/tipsy
+	url = https://github.com/jaz303/tipsy.git
