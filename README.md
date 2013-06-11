@@ -8,6 +8,8 @@ _This project isn't worth forking... yet. It's barely been started_
 
 The plug-in makes use of jQuery-Verbose-Calendar (https://github.com/iamjpg/jQuery-Verbose-Calendar) Tipsy (http://onehackoranother.com) and jQuery.ScrollTo (http://flesler.blogspot.com/2007/10/jqueryscrollto.html).
 
+Each is included as a submodule so be sure to use _git clone --recursive https://github.com/ColinWaddell/jQuery-MVCalendar.git_
+
 
 # Implementation
 
