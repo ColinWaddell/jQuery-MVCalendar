@@ -22,13 +22,11 @@
 
 (function ($, window, document) {
 
-  //
   // Globals
   var pluginName = 'calendar',
     pl = null,
     d = new Date();
 
-  //
   // Defaults
   defaults = {
     d: d,
@@ -37,7 +35,8 @@
     month: d.getMonth(),
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
-    scroll_to_date: true
+    scroll_to_date: true,
+    show_future: false 
   };
 
   month_array = [
@@ -70,7 +69,6 @@
     '31' // dec
   ];
 
-  //
   // Main Plugin Object
 
   function Calendar(element, options) {
@@ -81,27 +79,23 @@
     this._name = pluginName;
 
 
-    //
     // Begin
     this.init();
   }
 
-  //
   // Init
   Calendar.prototype.init = function () {
 
-    //
     // Call print - who knows, maybe more will be added to the init function...
-    this.print();
+    this.render();
   }
 
-  Calendar.prototype.print = function (year) {
+  Calendar.prototype.render = function () {
 
-    //
     // Pass in any year you damn like.
-    var the_year = (year) ? parseInt(year) : parseInt(pl.options.year);
+    var the_year = parseInt(pl.options.year);
+    var the_month = parseInt(pl.options.month);
 
-    //
     // First, clear the element
     $(this.element).empty();
 
@@ -109,101 +103,103 @@
       display: 'none'
     });
 
-    //
     // Append parent div to the element
     $(this.element).append('<div id=\"calendar\"></div>');
 
-    //
     // Set reference for calendar DOM object
     var $_calendar = $('#calendar');
-    //
     // Navigation year-arrows
     $_calendar.append('<div id=\"year-arrows\"></div>');
 
-    //
     // DOM object reference for year-arrows
     $_yeararrows = $('#year-arrows');
     $_yeararrows.append('<div class=\"prev\"></div>');
     $_yeararrows.append('<div class=\"next\"></div>');
+    if (the_year === d.getFullYear())
+      $_yeararrows.children().last().addClass("disabled");
 
-    //
     // Let's append the year
     $.each(the_year.toString(), function (i, o) {
       $_calendar.append('<div class=\"year\">' + o + '</div>');
     });
 
-    //
     // Add a clear for the floated elements
     $_calendar.append('<div class=\"clear\"></div>');
 
-    //
     // Loop over the month arrays, loop over the characters in teh string, and apply to divs.
-    $.each(month_array, function (i, o) {
+    var month_name = month_array[the_month];
 
-      //
-      // Create a scrollto marker
-      $_calendar.append("<div id='" + o + "'></div>");
+    // Create a scrollto marker
+    $_calendar.append("<div id='" + month_name + "'></div>");
 
-      $.each(month_array[i], function (i, o) {
+    // Navigation month-arrows
+    $_calendar.append('<div id=\"month-arrows\"></div>');
+    // DOM object reference for month-arrows
+    $_montharrows = $('#month-arrows');
+    $_montharrows.append('<div class=\"prev\"></div>');
+    $_montharrows.append('<div class=\"next\"></div>');
+    if (pl.options.show_future === false && the_year >= d.getFullYear() && the_month === d.getMonth())
+      $_montharrows.children().last().addClass("disabled");
 
-        //
-        // Looping over characters, apply them to divs
-        $_calendar.append('<div class=\"label title\">' + o + '</div>');
 
-      });
 
-      //
-      // Add a clear for the floated elements
-      $_calendar.append('<div class=\"clear\"></div>');
+    $.each(month_name, function (i, o) {
 
-      //
-      // Check for leap year
-      if (o === 'February') {
-        if (pl.isLeap(the_year)) {
-          month_days[i] = 29;
-        } else {
-          month_days[i] = 28;
-        }
-      }
+      // Looping over characters, apply them to divs
+      $_calendar.append('<div class=\"label title\">' + o + '</div>');
 
-      for (j = 1; j <= parseInt(month_days[i]); j++) {
-
-        //
-        // Check for today
-        var today = '';
-        if (i === pl.options.month && the_year === d.getFullYear()) {
-          if (j === pl.options.today) {
-            today = 'today';
-          }
-        }
-
-        var dt = new Date((parseInt(i) + 1) + '/' + j + '/' + the_year);
-        var weekend = '';
-        if (dt.getDay() == 6 || dt.getDay() == 0) {
-          weekend = 'weekend';
-        }
-
-        //
-        // Looping over numbers, apply them to divs
-        $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + "'>" + j + '</div>');
-      }
-
-      //
-      // Add a clear for the floated elements
-      $_calendar.append('<div class=\"clear\"></div>');
     });
 
-    //
+    // Add a clear for the floated elements
+    $_calendar.append('<div class=\"clear\"></div>');
+
+    // Check for leap year
+    if (month_name === 'February') {
+      if (pl.isLeap(the_year)) {
+        month_days[the_month] = 29;
+      } else {
+        month_days[the_month] = 28;
+      }
+    }
+
+    for (j = 1; j <= parseInt(month_days[the_month]); j++) {
+
+      // Check for today
+      var today = '';
+      if (the_month === d.getMonth() && the_year === d.getFullYear()) {
+        if (j === pl.options.today) {
+          today = 'today';
+        }
+      }
+      
+      // Check if future
+      var future = '';
+      if (pl.options.show_future === false && j >= d.getDay() && the_month >= d.getMonth() && the_year >= d.getFullYear()) {
+          future = 'future';
+      }
+
+      // Check if weekend
+      var dt = new Date(the_year, the_month+1, j);
+      var weekend = '';
+      if (dt.getDay() == 6 || dt.getDay() == 0) {
+        weekend = 'weekend';
+      }
+
+      // Looping over numbers, apply them to divs
+      $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</div>');
+    }
+
+    // Add a clear for the floated elements
+    $_calendar.append('<div class=\"clear\"></div>');
+
     // Loop over the elements and show them one by one.
     for (k = 0; k < $('.label').length; k++) {
       (function (j) {
         setTimeout(function () {
 
-          //
           // Fade the labels in
           $($('.label')[j]).fadeIn('fast', function () {
 
-            //
             // Set titles for tipsy once in DOM
             $(this).attr('original-title', pl.returnFormattedDate($(this).attr('data-date')));
 
@@ -223,46 +219,54 @@
       })(k);
     }
 
-    //
-    // Scroll to month
-    if (the_year === pl.options.current_year && pl.options.scroll_to_date) {
-      var print_finished = false;
-      var print_check = setInterval(function () {
-        print_finished = true;
-        $.each($(".label"), function () {
-          if ($(this).css("display") === "none") {
-            print_finished = false;
-          }
-        });
-        if (print_finished) {
-          clearInterval(print_check);
-          $(window).scrollTo($('#' + month_array[pl.options.month]), 800);
-        }
-      }, 200);
-    }
-
-    //
     // Tipsy
     $('.label').tipsy({
       gravity: pl.options.tipsy_gravity
     });
   }
 
-  //
   // Previous / Next Year on click events
-  $(document).on('click', '.next', function () {
-    pl.options.year = parseInt(pl.options.year) + 1;
+  $(document).on('click', '#year-arrows > .next', function (e) {
+    if ($(e.currentTarget).hasClass('disabled') === false)
+    {
+      pl.options.year = parseInt(pl.options.year) + 1;
 
-    pl.print(pl.options.year);
+      pl.render();
+    }
   });
 
-  $(document).on('click', '.prev', function () {
+  $(document).on('click', '#year-arrows > .prev', function () {
     pl.options.year = parseInt(pl.options.year) - 1;
 
-    pl.print(pl.options.year);
+    pl.render();
   });
 
-  //
+
+  // Previous / Next Month on click events
+  $(document).on('click', '#month-arrows > .next', function (e) {
+    if ($(e.currentTarget).hasClass('disabled') === false)
+    {
+      pl.options.month = parseInt(pl.options.month) + 1;
+      if (pl.options.month == 12) {
+        pl.options.month = 0; 
+        pl.options.year = parseInt(pl.options.year) + 1;
+      }
+
+      pl.render();
+    }
+  });
+
+  $(document).on('click', '#month-arrows > .prev', function () {
+    pl.options.month = parseInt(pl.options.month) - 1;
+    if (pl.options.month == -1){
+      pl.options.month = 11;
+      pl.options.year = parseInt(pl.options.year) - 1;
+    }
+
+    pl.render();
+  });
+
+
   // Simple JS function to check if leap year
   Calendar.prototype.isLeap = function (year) {
     var leap = 0;
@@ -270,7 +274,6 @@
     return leap;
   }
 
-  //
   // Method to return full date
   Calendar.prototype.returnFormattedDate = function (date) {
     var returned_date;
@@ -296,8 +299,6 @@
     return returned_date;
   }
 
-
-  //
   // Plugin Instantiation
   $.fn[pluginName] = function (options) {
     return this.each(function () {
