@@ -35,7 +35,8 @@
     month: d.getMonth(),
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
-    show_future: true 
+    show_future: false,
+    show_one_month: false
   };
 
   month_array = [
@@ -93,7 +94,6 @@
 
     // Pass in any year you damn like.
     var the_year = parseInt(pl.options.year);
-    var the_month = parseInt(pl.options.month);
 
     // First, clear the element
     $(this.element).empty();
@@ -126,68 +126,81 @@
     $_calendar.append('<div class=\"clear\"></div>');
 
     // Loop over the month arrays, loop over the characters in teh string, and apply to divs.
-    var month_name = month_array[the_month];
 
     // Create a scrollto marker
     $_calendar.append("<div id='" + month_name + "'></div>");
 
-    // Navigation month-arrows
-    $_calendar.append('<div id=\"month-arrows\"></div>');
-    // DOM object reference for month-arrows
-    $_montharrows = $('#month-arrows');
-    $_montharrows.append('<div class=\"prev\"></div>');
-    $_montharrows.append('<div class=\"next\"></div>');
-    if (pl.options.show_future === false && the_year >= d.getFullYear() && the_month === d.getMonth())
-      $_montharrows.children().last().addClass("disabled");
+    var from_month, to_month;
+
+    if (pl.options.show_one_month === true)
+    {
+      // Navigation month-arrows
+      $_calendar.append('<div id=\"month-arrows\"></div>');
+      // DOM object reference for month-arrows
+      $_montharrows = $('#month-arrows');
+      $_montharrows.append('<div class=\"prev\"></div>');
+      $_montharrows.append('<div class=\"next\"></div>');
+
+      to_month = from_month = pl.options.month;
 
 
-
-    $.each(month_name, function (i, o) {
-
-      // Looping over characters, apply them to divs
-      $_calendar.append('<div class=\"label title\">' + o + '</div>');
-
-    });
-
-    // Add a clear for the floated elements
-    $_calendar.append('<div class=\"clear\"></div>');
-
-    // Check for leap year
-    if (month_name === 'February') {
-      if (pl.isLeap(the_year)) {
-        month_days[the_month] = 29;
-      } else {
-        month_days[the_month] = 28;
-      }
+      if (pl.options.show_future === false && the_year >= d.getFullYear() && the_month === d.getMonth())
+        $_montharrows.children().last().addClass("disabled");
+    } 
+    else {
+      from_month = 0;
+      to_month = 11;
+      if (pl.options.show_future === false && the_year >= d.getFullYear())
+        to_month = d.getMonth();
     }
+    
 
-    for (j = 1; j <= parseInt(month_days[the_month]); j++) {
+    for( the_month = from_month; the_month <= to_month; the_month++){
+      var month_name = month_array[the_month];
+      $.each(month_name, function (i, o) {
+        // Looping over characters, apply them to divs
+        $_calendar.append('<div class=\"label title\">' + o + '</div>');
+      });
 
-      // Check for today
-      var today = '';
-      if (the_month === d.getMonth() && the_year === d.getFullYear()) {
-        if (j === pl.options.today) {
-          today = 'today';
+      // Add a clear for the floated elements
+      $_calendar.append('<div class=\"clear\"></div>');
+
+      // Check for leap year
+      if (month_name === 'February') {
+        if (pl.isLeap(the_year)) {
+          month_days[the_month] = 29;
+        } else {
+          month_days[the_month] = 28;
         }
       }
-      
-      // Check if future
-      var future = '';
-      if (pl.options.show_future === false && j-1 >= d.getDate() && the_month >= d.getMonth() && the_year >= d.getFullYear()) {
-          future = 'future';
-      }
 
-      // Check if weekend
-      var dt = new Date(the_year, the_month+1, j);
-      var weekend = '';
-      if (dt.getDay() == 6 || dt.getDay() == 0) {
-        weekend = 'weekend';
-      }
+      for (j = 1; j <= parseInt(month_days[the_month]); j++) {
 
-      // Looping over numbers, apply them to divs
-      $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</div>');
+        // Check for today
+        var today = '';
+        if (the_month === d.getMonth() && the_year === d.getFullYear()) {
+          if (j === pl.options.today) {
+            today = 'today';
+          }
+        }
+        
+        // Check if future
+        var future = '';
+        if (pl.options.show_future === false && j-1 >= d.getDate() && the_month >= d.getMonth() && the_year >= d.getFullYear()) {
+            future = 'future';
+        }
+
+        // Check if weekend
+        var dt = new Date(the_year, the_month+1, j);
+        var weekend = '';
+        if (dt.getDay() == 6 || dt.getDay() == 0) {
+          weekend = 'weekend';
+        }
+
+        // Looping over numbers, apply them to divs
+        $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</div>');
+      }
     }
-
     // Add a clear for the floated elements
     $_calendar.append('<div class=\"clear\"></div>');
 
