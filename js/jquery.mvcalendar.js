@@ -35,8 +35,7 @@
     month: d.getMonth(),
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
-    scroll_to_date: true,
-    show_future: false 
+    show_future: true 
   };
 
   month_array = [
@@ -115,7 +114,7 @@
     $_yeararrows = $('#year-arrows');
     $_yeararrows.append('<div class=\"prev\"></div>');
     $_yeararrows.append('<div class=\"next\"></div>');
-    if (the_year === d.getFullYear())
+    if (the_year >= d.getFullYear())
       $_yeararrows.children().last().addClass("disabled");
 
     // Let's append the year
@@ -174,7 +173,7 @@
       
       // Check if future
       var future = '';
-      if (pl.options.show_future === false && j >= d.getDay() && the_month >= d.getMonth() && the_year >= d.getFullYear()) {
+      if (pl.options.show_future === false && j-1 >= d.getDate() && the_month >= d.getMonth() && the_year >= d.getFullYear()) {
           future = 'future';
       }
 
@@ -201,7 +200,8 @@
           $($('.label')[j]).fadeIn('fast', function () {
 
             // Set titles for tipsy once in DOM
-            $(this).attr('original-title', pl.returnFormattedDate($(this).attr('data-date')));
+            if ($(this).hasClass('future') === false)
+              $(this).attr('original-title', pl.returnFormattedDate($(this).attr('data-date')));
 
             $(this).on('click', function () {
               if (typeof pl.options.click_callback == 'function') {
@@ -230,6 +230,8 @@
     if ($(e.currentTarget).hasClass('disabled') === false)
     {
       pl.options.year = parseInt(pl.options.year) + 1;
+      if (pl.options.show_future === false && pl.options.year == d.getFullYear() && pl.options.month > d.getMonth())
+        pl.options.month = d.getMonth();
 
       pl.render();
     }
