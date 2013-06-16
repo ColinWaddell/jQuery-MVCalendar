@@ -36,7 +36,8 @@
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
     show_future: false,
-    show_one_month: false
+    show_one_month: false,
+    scroll_to_date: true
   };
 
   month_array = [
@@ -157,6 +158,8 @@
 
     for( the_month = from_month; the_month <= to_month; the_month++){
       var month_name = month_array[the_month];
+      // Create a scrollto marker
+      $_calendar.append("<div id='" + month_name + "'></div>");
       $.each(month_name, function (i, o) {
         // Looping over characters, apply them to divs
         $_calendar.append('<div class=\"label title\">' + o + '</div>');
@@ -200,9 +203,11 @@
         // Looping over numbers, apply them to divs
         $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</div>');
       }
+    
+      // Add a clear for the floated elements
+      $_calendar.append('<div class=\"clear\"></div>');
+
     }
-    // Add a clear for the floated elements
-    $_calendar.append('<div class=\"clear\"></div>');
 
     // Loop over the elements and show them one by one.
     for (k = 0; k < $('.label').length; k++) {
@@ -230,6 +235,23 @@
 
         }, (k * 3));
       })(k);
+    }
+
+    // Scroll to month
+    if (the_year === pl.options.current_year && pl.options.scroll_to_date) {
+      var print_finished = false;
+      var print_check = setInterval(function () {
+        print_finished = true;
+        $.each($(".label"), function () {
+          if ($(this).css("display") === "none") {
+            print_finished = false;
+          }
+        });
+        if (print_finished) {
+          clearInterval(print_check);
+          $(window).scrollTo($('#' + month_array[pl.options.month]), 800); //Need to get it to scroll inside div
+        }
+      }, 200);
     }
 
     // Tipsy
