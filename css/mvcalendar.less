@@ -1,0 +1,107 @@
+@padding-top: (@boxHeight - @fontSize);
+
+#calendar {
+  font-family: @fontFamily;
+}
+
+#calendar .label ,
+#calendar .year {
+  color: @boxTitleForeColour;
+  font-size: @fontSize;
+  font-weight: 100;
+  width: @boxWidth;
+  height: @boxHeight;
+  padding: @padding-top 0 0 0;
+  margin: @boxMargin 0 0 @boxMargin;
+  text-align: center;
+  float: left;
+  background: @boxTitleBackColour;
+}
+
+#calendar .label {
+  display: none;
+  color: @boxDayForeColour;
+  background: @boxDayBackColour;
+}
+
+
+#calendar .label.blank:hover{
+  background: @boxDayBackColour;
+} 
+
+
+
+#calendar .label.future{
+  background: lighten(@boxDayBackColour, 30%);
+  color: lighten(@boxDayForeColour, 90%);
+}
+
+#calendar .label:hover {
+  background: lighten(@boxDayBackColour, 30%);
+  color: lighten(@boxDayForeColour, 90%);
+  text-decoration: none !important ; // Need to do a better job than this
+}
+
+#calendar .label.title {
+  color: @boxTitleForeColour;
+  background: @boxTitleBackColour;
+  text-transform: uppercase;
+}
+
+#calendar .label.weekend {
+  background: @boxWeekendBackColour;
+}
+
+
+#calendar .label.weekend:hover {
+  background: lighten(@boxWeekendBackColour, 30%);
+}
+
+#calendar .label.blank.weekend:hover{
+  background: @boxWeekendBackColour;
+}
+
+#calendar .label.weekend.future {
+  background: lighten(@boxWeekendBackColour, 30%);
+}
+
+#calendar .label.today {
+  background: @boxCurrentDayBackColour;
+}
+
+#calendar #year-arrows {
+  float: left;
+  cursor: pointer;
+}
+
+#calendar #month-arrows .next ,
+#calendar #month-arrows .prev ,
+#calendar #year-arrows .next ,
+#calendar #year-arrows .prev {
+  background: @boxTitleBackColour url('../img/arrow-next.gif') no-repeat center center;
+  width: @boxWidth;
+  height: (@boxHeight + @padding-top);
+  margin: @boxMargin 0 0 @boxMargin;
+  float: left;
+}
+
+#calendar #month-arrows .next:hover ,
+#calendar #year-arrows .next:hover {
+  background: #399afe url('../img/arrow-next.gif') no-repeat center center;;
+}
+
+#calendar #month-arrows .prev,
+#calendar #year-arrows .prev {
+  background: @boxTitleBackColour url('../img/arrow-prev.gif') no-repeat center center;
+}
+
+#calendar #month-arrows .prev:hover ,
+#calendar #year-arrows .prev:hover {
+  background: #399afe url('../img/arrow-prev.gif') no-repeat center center;;
+}
+
+.clear {
+  clear: both;
+}
+
+
