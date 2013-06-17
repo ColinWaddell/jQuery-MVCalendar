@@ -1,11 +1,10 @@
 /* 
-  jQuery Verbose Calendar
-  http://johnpatrickgiven.com
-  https://github.com/iamjpg/jQuery-Verbose-Calendar/
-          
+  jQuery MVCalendar
+  https://github.com/ColinWaddell/jQuery-MVCalendar        
+
   MIT License
           
-  Copyright (C) 2012 John Patrick Given
+  Copyright (C) 2013 John Patrick Given, Colin Waddell
 
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
   documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
