@@ -1,6 +1,6 @@
 # jQuery MVCalendar
 
-I'm re-writting John Patrick Given's jQuery-Verbose-Calendar so it sits inside a backbone mvc framework, adding some extra functionality along the way.
+I'm re-writting John Patrick Given's jQuery-Verbose-Calendar so it works alongside jQuery.Model to enabled ajax push/pulls, adding some extra functionality along the way.
 
 _This project isn't worth forking... yet. It's barely been started._
 
