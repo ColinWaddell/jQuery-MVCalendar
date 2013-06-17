@@ -35,7 +35,7 @@
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
     show_future: true,
-    show_one_month: false,
+    show_one_month: true,
     scroll_to_date: true,
     scroll_speed: 800,
     group_week: true 
@@ -209,7 +209,9 @@
             var pads = ( day == 0 ? 6 : day - 1 );
           
             for ( p=1; p<=pads; p++ )
-              $_calendar.append("<a href='#' class='label day blank " + weekend + "'> &nbsp; </a>");
+            { 
+              $_calendar.append("<a class='label day blank " + ( p>5 ? 'weekend' : '' ) + "'> &nbsp; </a>");
+            }
           }
 
           // If Monday, include new line
@@ -240,16 +242,17 @@
             if ($(this).hasClass('future') === false)
               $(this).attr('original-title', pl.returnFormattedDate($(this).attr('data-date')));
 
-            $(this).on('click', function () {
-              if (typeof pl.options.click_callback == 'function') {
-                /*var d = $(this).attr('data-date').split("/");*/
-                //var dObj = {}
-                //dObj.day = d[1];
-                //dObj.month = d[0];
-                //dObj.year = d[2];
-                /*pl.options.click_callback.call(this, dObj);*/
-              }
-            });
+            if ($(this).hasClass('disabled'))  
+              $(this).on('click', function () {
+                if (typeof pl.options.click_callback == 'function') {
+                  var d = $(this).attr('data-date').split("/");
+                  var dObj = {}
+                  dObj.day = d[1];
+                  dObj.month = d[0];
+                  dObj.year = d[2];
+                  pl.options.click_callback.call(this, dObj);
+                }
+              });
           });
 
         }, (k * 3));
