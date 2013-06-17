@@ -35,24 +35,26 @@
     month: d.getMonth(),
     current_year: d.getFullYear(),
     tipsy_gravity: 's',
-    show_future: false,
+    show_future: true,
     show_one_month: false,
-    scroll_to_date: true
+    scroll_to_date: true,
+    scroll_speed: 800,
+    group_week: true 
   };
 
   month_array = [
     'January',
-    'February',
+    'Feb',
     'March',
     'April',
     'May',
     'June',
     'July',
     'August',
-    'September',
+    'Sept',
     'October',
-    'November',
-    'December'
+    'Nov',
+    'Dec'
   ];
 
   month_days = [
@@ -78,7 +80,6 @@
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
-
 
     // Begin
     this.init();
@@ -115,7 +116,7 @@
     $_yeararrows = $('#year-arrows');
     $_yeararrows.append('<div class=\"prev\"></div>');
     $_yeararrows.append('<div class=\"next\"></div>');
-    if (the_year >= d.getFullYear())
+    if (pl.options.show_future === false && the_year >= d.getFullYear())
       $_yeararrows.children().last().addClass("disabled");
 
     // Let's append the year
@@ -200,8 +201,27 @@
           weekend = 'weekend';
         }
 
+        // Check if start of month needs padded or end of week needs a new line
+        if (pl.options.group_week)
+        {
+          var day = dt.getDay();
+          if (j==1)
+          {
+            var pads = ( day == 0 ? 6 : day - 1 );
+          
+            for ( p=1; p<=pads; p++ )
+              $_calendar.append("<a href='#' class='label day blank " + weekend + "'> &nbsp; </a>");
+          }
+
+          // If Monday, include new line
+          if ( day==1 && j>1 )
+          {
+            $_calendar.append('<div class=\"clear\"></div>');
+          }
+        }
+
         // Looping over numbers, apply them to divs
-        $_calendar.append("<div data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</div>');
+        $_calendar.append("<a href='#' data-date='" + dt.toString('MM-dd-yyyy') + "' class='label day " + today + " " + weekend + " " + future + "'>" + j + '</a>');
       }
     
       // Add a clear for the floated elements
@@ -249,7 +269,9 @@
         });
         if (print_finished) {
           clearInterval(print_check);
-          $(window).scrollTo($('#' + month_array[pl.options.month]), 800); //Need to get it to scroll inside div
+          
+          var el = $(pl.element).css('overflow-y') === 'scroll' ? pl.element : window ; 
+          $(el).scrollTo($('#' + month_array[pl.options.month]), pl.options.scroll_speed); 
         }
       }, 200);
     }
