@@ -119,7 +119,7 @@
       $_yeararrows.children().last().addClass("disabled");
 
     // Let's append the year
-    $.each(the_year.toString(), function (i, o) {
+    $.each(the_year.toString().split(''), function (i, o) {
       $_calendar.append('<div class=\"year\">' + o + '</div>');
     });
 
@@ -160,7 +160,7 @@
       var month_name = month_array[the_month];
       // Create a scrollto marker
       $_calendar.append("<div id='" + month_name + "'></div>");
-      $.each(month_name, function (i, o) {
+      $.each(month_name.split(''), function (i, o) {
         // Looping over characters, apply them to divs
         $_calendar.append('<div class=\"label title\">' + o + '</div>');
       });
