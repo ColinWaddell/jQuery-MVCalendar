@@ -31,20 +31,16 @@
   <script>
 
     $(document).ready(function() {
-      $("#main-container").calendar({
+      $("#main-container")
+        .calendar({
           tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
-          click_callback: calendar_callback, // Callback to return the clicked date
-      });
+        })
+        .bind('calendar:dateclicked',
+          function (e, date){
+            console.log(date);
+        });
     });
 
-    //
-    // Example of callback - do something with the returned date
-    var calendar_callback = function(date) {
-      //
-      // Returned date is a date object containing the day, month, and year.
-      // date.day = day; date.month = month; date.year = year;
-      console.log(date);
-    }
   </script>
 </head>
 <body>
