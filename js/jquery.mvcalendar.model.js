@@ -15,13 +15,50 @@
 
     // Called after main plugin has completed _create
     _init: function () {
-      $.Model('Todo', {
-        findAll: 'GET /todos.json',
-        findOne: 'GET /todos/{id}.json',
-        create: 'POST /todos.json',
-        update: 'PUT /todos/{id}.json',
-        destroy: 'DELETE /todos/{id}.json'
-      }, {});
+      $.Model('Journeys', {
+        findAll: 'GET /calendar.json',
+        findOne: 'GET /calendar/{id}.json',
+        create: 'POST /journeys.json',
+        update: 'PUT /journeys/{id}.json',
+        destroy: 'DELETE /journeys/{id}.json'
+      }, {/*user defined functions*/});
+
+      /*Journeys.findAll(*/
+        //{
+          //year: 'blah',
+          //month: 'blah'
+        /*}, this._fillCalendar );*/
+
+
+      this.element.bind('calendar:dateclicked', this._dateClickCallback);
+
+    },
+
+    _fillCalendar: function(journeys){
+      $.each(journeys, function(journey) {
+
+      });
+    },
+
+    _dateClickCallback: function(e, date){
+      console.log('hi');
+      //this._trigger(':dateclicked:modelretrieved', e, date, 'blah');
+    },
+
+    create: function(data){
+
+    },
+
+    retrieve: function(id){
+              
+    },
+
+    update: function(id, data){
+    
+    },
+    
+    destroy: function(id){
+             
     }
 
   };
@@ -30,3 +67,7 @@
 
 
 })(jQuery);
+
+
+
+//$('#main-container').calendar("update", id, data)

@@ -35,11 +35,10 @@
         .calendar({
           tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
         })
-        .bind('calendar:dateclicked',
-          function (e, date){
-            console.log(date);
-        });
-    });
+        .bind('calendar:dateclicked:modelretrieved', function(e, date, data){
+            console.log('yo');
+          })
+      });
 
   </script>
 </head>
