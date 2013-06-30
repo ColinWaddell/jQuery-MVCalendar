@@ -1,5 +1,5 @@
 #calendar{font-family:Helvetica,Arial;}
-#calendar .label,#calendar .year{color:#ffffff;font-size:16px;font-weight:100;width:39px;height:35px;padding:3.8000000000000003px 0 0 0;margin:1px 0 0 1px;text-align:center;float:left;background:#2675aa;}
+#calendar .label,#calendar .year{color:#ffffff;font-size:16px;font-weight:100;width:39px;height:30px;padding:9.799999999999999px 0 0 0;margin:1px 0 0 1px;text-align:center;float:left;background:#2675aa;}
 #calendar .label{color:#000000;background:#eeeeee;text-decoration:none;}
 #calendar .label.blank:hover{background:#eeeeee;}
 #calendar .label.future{background:#ffffff;color:#e6e6e6;}
@@ -11,7 +11,7 @@
 #calendar .label.weekend.future{background:#ffffff;}
 #calendar .label.today{background:#cadeec;}
 #calendar #year-arrows{float:left;cursor:pointer;}
-#calendar #month-arrows .next,#calendar #month-arrows .prev,#calendar #year-arrows .next,#calendar #year-arrows .prev{background:#2675aa url('../img/arrow-next.gif') no-repeat center center;width:39px;height:38.8px;margin:1px 0 0 1px;float:left;}
+#calendar #month-arrows .next,#calendar #month-arrows .prev,#calendar #year-arrows .next,#calendar #year-arrows .prev{background:#2675aa url('../img/arrow-next.gif') no-repeat center center;width:39px;height:39.8px;margin:1px 0 0 1px;float:left;}
 #calendar #month-arrows .next:hover,#calendar #year-arrows .next:hover{background:#399afe url('../img/arrow-next.gif') no-repeat center center;}
 #calendar #month-arrows .prev,#calendar #year-arrows .prev{background:#2675aa url('../img/arrow-prev.gif') no-repeat center center;}
 #calendar #month-arrows .prev:hover,#calendar #year-arrows .prev:hover{background:#399afe url('../img/arrow-prev.gif') no-repeat center center;}
