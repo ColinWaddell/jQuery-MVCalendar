@@ -16,12 +16,21 @@
     // Called after main plugin has completed _create
     _init: function () {
       $.Model('Journeys', {
-        findAll: 'GET /calendar.json',
+        findAll : function(params, success, error){
+          return $.ajax({
+            url: '/journey/' + this.options.year,
+            type: 'get',
+            dataType: 'json thing.models',
+            data: params,
+            success: success,
+            error: error})
+        },
         findOne: 'GET /calendar/{id}.json',
         create: 'POST /journeys.json',
         update: 'PUT /journeys/{id}.json',
         destroy: 'DELETE /journeys/{id}.json'
       }, {/*user defined functions*/});
+
 
       /*Journeys.findAll(*/
         //{

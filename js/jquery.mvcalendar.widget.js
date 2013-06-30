@@ -6,18 +6,18 @@
     d = new Date();
 
   month_array = [
-    'January',
-    'Feb',
+    'Jan  ',
+    'Feb  ',
     'March',
     'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'Sept',
-    'October',
-    'Nov',
-    'Dec'
+    'May  ',
+    'June ',
+    'July ',
+    'Aug  ',
+    'Sep  ',
+    'Oct  ',
+    'Nov  ',
+    'Dec  '
   ];
 
   month_days = [
@@ -111,6 +111,8 @@
       $.each(the_year.toString().split(''), function (i, o) {
         $_calendar.append('<div class=\"year\">' + o + '</div>');
       });
+
+      $_calendar.append('<div class=\"year\">&nbsp;</div>');
 
       // Add a clear for the floated elements
       $_calendar.append('<div class=\"clear\"></div>');

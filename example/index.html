@@ -34,6 +34,8 @@
       $("#main-container")
         .calendar({
           tipsy_gravity: 's', // How do you want to anchor the tipsy notification? (n / s / e / w)
+          show_one_month: true,
+          scroll_to_date: false
         })
         .bind('calendar:dateclicked:modelretrieved', function(e, date, data){
             console.log('yo');
