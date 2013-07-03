@@ -37,8 +37,8 @@
 }
 
 #calendar .label:hover {
-  background: lighten(@boxDayBackColour, 30%);
-  color: lighten(@boxDayForeColour, 90%);
+  background: @boxDayBackColourHover;
+  color: @boxDayBackColour;
   text-decoration: none !important ; // Need to do a better job than this
 }
 
@@ -54,7 +54,8 @@
 
 
 #calendar .label.weekend:hover {
-  background: lighten(@boxWeekendBackColour, 30%);
+  background: @boxDayBackColourHover;
+  color: @boxDayBackColour;
 }
 
 #calendar .label.blank.weekend:hover{
