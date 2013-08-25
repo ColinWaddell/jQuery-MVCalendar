@@ -50,13 +50,18 @@
       group_week: true
     },
 
+    data: {
+    
+    },
+
     _create: function () {
       this.refresh();
 
       // Previous / Next Year on click events
       $(document).on('click', '#year-arrows > .next', $.proxy(function (e) {
-        if ($(e.currentTarget).hasClass('disabled') === false)
+        if ($(e.currentTarget).hasClass('disabled') === false){
            this._year_next();
+        }
       }, this));
 
       $(document).on('click', '#year-arrows > .prev', $.proxy(function (e) {
@@ -65,8 +70,9 @@
 
       // Previous / Next Month on click events
       $(document).on('click', '#month-arrows > .next', $.proxy(function (e) {
-        if ($(e.currentTarget).hasClass('disabled') === false)
+        if ($(e.currentTarget).hasClass('disabled') === false){
           this._month_next();
+        }
       }, this));
 
       $(document).on('click', '#month-arrows > .prev', $.proxy(function (e) {
@@ -87,7 +93,7 @@
     refresh: function () {
 
       // Pass in any year you damn like.
-      var the_year = parseInt(this.options.year);
+      var the_year = parseInt(this.options.year, '');
 
       // First, clear the element
       $(this.element).empty();
@@ -104,8 +110,9 @@
       $_yeararrows = $('#year-arrows');
       $_yeararrows.append('<div class=\"prev\"></div>');
       $_yeararrows.append('<div class=\"next\"></div>');
-      if (this.options.show_future === false && the_year >= d.getFullYear())
+      if (this.options.show_future === false && the_year >= d.getFullYear()){
         $_yeararrows.children().last().addClass("disabled");
+      }
 
       // Let's append the year
       $.each(the_year.toString().split(''), function (i, o) {
@@ -133,17 +140,20 @@
         $_montharrows.append('<div class=\"next\"></div>');
 
         to_month = from_month = this.options.month;
+      
 
-
-        if (this.options.show_future === false && the_year >= d.getFullYear() && this.options.month === d.getMonth())
+        if (this.options.show_future === false && the_year >= d.getFullYear() && this.options.month === d.getMonth()){
           $_montharrows.children().last().addClass("disabled");
+        }
+
       } else {
         from_month = 0;
         to_month = 11;
-        if (this.options.show_future === false && the_year >= d.getFullYear())
+        if (this.options.show_future === false && the_year >= d.getFullYear()){
           to_month = d.getMonth();
+        }
       }
-
+      
 
       for (the_month = from_month; the_month <= to_month; the_month++) {
         var month_name = month_array[the_month];
@@ -166,7 +176,7 @@
           }
         }
 
-        for (j = 1; j <= parseInt(month_days[the_month]); j++) {
+        for (j = 1; j <= parseInt(month_days[the_month], ''); j++) {
 
           // Check for today
           var today = '';
@@ -185,15 +195,15 @@
           // Check if weekend
           var dt = new Date(the_year, the_month + 1, j);
           var weekend = '';
-          if (dt.getDay() == 6 || dt.getDay() == 0) {
+          if (dt.getDay() === 6 || dt.getDay() === 0) {
             weekend = 'weekend';
           }
 
           // Check if start of month needs padded or end of week needs a new line
           if (this.options.group_week) {
             var day = dt.getDay();
-            if (j == 1) {
-              var pads = (day == 0 ? 6 : day - 1);
+            if (j === 1) {
+              var pads = (day === 0 ? 6 : day - 1);
 
               for (p = 1; p <= pads; p++) {
                 $_calendar.append("<a class='label day blank " + (p > 5 ? 'weekend' : '') + "'> &nbsp; </a>");
@@ -201,7 +211,7 @@
             }
 
             // If Monday, include new line
-            if (day == 1 && j > 1) {
+            if (day === 1 && j > 1) {
               $_calendar.append('<div class=\"clear\"></div>');
             }
           }
@@ -224,24 +234,27 @@
       for (k = 0; k < $('.label').length; k++) {
         var el = $($('.label')[k]);
         // Set titles for tipsy once in DOM
-        if (el.hasClass('future') === false)
+        if (el.hasClass('future') === false){
           el.attr('original-title', this._returnFormattedDate(el.attr('data-date')));
+        }
         
         if (!(el.hasClass('disabled') || el.hasClass('title') || el.hasClass('blank') ))
+        {
           el.on('click', $.proxy( function (e) {
             e.preventDefault(); // prevent page scrolling
 
             if (!($(e.currentTarget).hasClass('future')))
             {
               var d = $(e.currentTarget).attr('data-date').split("/");
-              var dObj = {}
+              var dObj = {};
               dObj.day = d[1];
               dObj.month = d[0];
               dObj.year = d[2];
-              this._trigger(':dateclicked', e, {'date': dObj})
+              this._trigger(':dateclicked', e, {date: dObj, target: e.currentTarget});
             }
 
           }, this)); // on click
+        }
       }
 
 
@@ -256,8 +269,9 @@
       $('.label').tipsy({
         gravity: this.options.tipsy_gravity
       });
-
+      
     },
+
     _returnFormattedDate: function (value) {
       var returned_date;
       var d = new Date(value);
