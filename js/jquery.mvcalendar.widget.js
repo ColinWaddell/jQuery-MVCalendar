@@ -1,5 +1,13 @@
 (function ($, window, document) {
 
+  Date.prototype.dateToYMD = function() {
+      var d = this.getDate();
+      var m = this.getMonth() + 1;
+      var y = this.getFullYear();
+      return y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+  };
+
+
   // Globals
   var pluginName = 'calendar',
     pl = null,
@@ -47,10 +55,11 @@
       show_one_month: false,
       scroll_to_date: true,
       scroll_speed: 800,
-      group_week: true
+      group_week: true,
+      dates_selected: []
     },
 
-    data: {
+    dates_selected: {
     
     },
 
@@ -193,7 +202,7 @@
           }
 
           // Check if weekend
-          var dt = new Date(the_year, the_month + 1, j);
+          var dt = new Date(the_year, the_month, j);
           var weekend = '';
           if (dt.getDay() === 6 || dt.getDay() === 0) {
             weekend = 'weekend';
@@ -218,7 +227,7 @@
 
           // Looping over numbers, apply them to divs
           $_calendar.append("<a href='#' data-date='" + 
-                              dt.toString('MM-dd-yyyy') + 
+                              dt.dateToYMD() +
                               "' class='label day " + 
                               today + " " + weekend + " " + 
                               future + "'>" + j + '</a>');
@@ -245,16 +254,18 @@
 
             if (!($(e.currentTarget).hasClass('future')))
             {
-              var d = $(e.currentTarget).attr('data-date').split("/");
-              var dObj = {};
-              dObj.day = d[1];
-              dObj.month = d[0];
-              dObj.year = d[2];
-              this._trigger(':dateclicked', e, {date: dObj, target: e.currentTarget});
+              var d = new Date($(e.currentTarget).attr('data-date'));
+              this._trigger(':dateclicked', e, {date: d, target: e.currentTarget});
             }
 
           }, this)); // on click
         }
+
+        if(this.options.dates_selected.indexOf(el.attr('data-date')) !== -1)
+        {
+          el.addClass('selected');
+        }
+
       }
 
 
@@ -341,12 +352,13 @@
 
     // Update calendar to show next year
     _year_next: function() {
-      var y = parseInt(this.options.year) + 1;
+      var y = parseInt(this.options.year, '') + 1;
       var m = this.options.month; 
       if (this.options.show_future === false 
           && this.options.year < d.getFullYear() 
-          && this.options.month > d.getMonth())
+          && this.options.month > d.getMonth()){
         m = d.getMonth();
+      }
 
       this._setOptions ({
                           'year': y,
@@ -360,20 +372,44 @@
     _year_prev: function() {
 
       this._setOptions ({
-                          'year': parseInt(this.options.year) - 1   
+                          'year': parseInt(this.options.year, '') - 1   
                         });
 
     },
 
-
-
     _destroy: function () {
       this.element
         .text("");
+    },
+
+
+    /*******************************
+    * Public Methods
+    *******************************/
+
+    toggleDate: function(data){
+      $(data.target).toggleClass('selected');
+
+      /* Add/Remove from list */
+      if ($(data.target).hasClass('selected')){
+        this.options.dates_selected.push( data.date.dateToYMD() );
+      }
+      else{
+        this.options.dates_selected.splice(
+          this.options.dates_selected.indexOf(
+            data.date.dateToYMD()
+          )
+        ,1);
+      }
+    },
+
+    getSelectedDates: function(){
+      return this.options.dates_selected;                  
     }
+
   });
 
 
   
 
-})(jQuery, window, document);
+}(jQuery, window, document));

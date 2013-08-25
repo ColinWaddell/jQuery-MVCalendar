@@ -36,7 +36,13 @@
   color: lighten(@boxDayForeColour, 90%);
 }
 
+
+#calendar .label.weekend {
+  background: @boxWeekendBackColour;
+}
+
 #calendar .label.selected,
+#calendar .label.weekend.selected,
 #calendar .label.selected:hover{
   background: #A5CE04;
 }
@@ -53,9 +59,6 @@
   text-transform: uppercase;
 }
 
-#calendar .label.weekend {
-  background: @boxWeekendBackColour;
-}
 
 
 #calendar .label.weekend:hover {
