@@ -3,7 +3,7 @@
 #calendar .label{color:#000000;background:#eeeeee;text-decoration:none;}
 #calendar .label.blank:hover{background:#eeeeee;}
 #calendar .label.future{background:#ffffff;color:#e6e6e6;}
-#calendar .label.selected,#calendar .label.selected:hover{background:red;}
+#calendar .label.selected,#calendar .label.selected:hover{background:#A5CE04;}
 #calendar .label:hover{background:#666666;color:#eeeeee;text-decoration:none !important ;}
 #calendar .label.title{color:#ffffff;background:#2675aa;text-transform:uppercase;}
 #calendar .label.weekend{background:#cccccc;}
