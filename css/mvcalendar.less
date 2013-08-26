@@ -41,11 +41,6 @@
   background: @boxWeekendBackColour;
 }
 
-#calendar .label.selected,
-#calendar .label.weekend.selected,
-#calendar .label.selected:hover{
-  background: #A5CE04;
-}
 
 #calendar .label:hover {
   background: @boxDayBackColourHover;
@@ -76,6 +71,13 @@
 
 #calendar .label.today {
   background: @boxCurrentDayBackColour;
+}
+
+#calendar .label.selected,
+#calendar .label.today.selected,
+#calendar .label.weekend.selected,
+#calendar .label.selected:hover{
+  background: #A5CE04;
 }
 
 #calendar #year-arrows {
