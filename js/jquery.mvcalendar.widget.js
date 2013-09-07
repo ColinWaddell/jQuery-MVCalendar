@@ -128,7 +128,7 @@
         $_calendar.append('<div class=\"year\">' + o + '</div>');
       });
 
-      $_calendar.append('<div class=\"year\">&nbsp;</div>');
+      $_calendar.append('<div class=\"year status\">&nbsp;</div>');
 
       // Add a clear for the floated elements
       $_calendar.append('<div class=\"clear\"></div>');
